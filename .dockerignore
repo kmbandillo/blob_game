@@ -1,0 +1,11 @@
+# Docker ignore for packaging images. IMPORTANT: Do NOT ignore .git
+# Exclude build artifacts and IDE files only
+target/
+bin/
+.classpath
+.project
+.settings/
+*.iml
+*.log
+node_modules/
+*.class
