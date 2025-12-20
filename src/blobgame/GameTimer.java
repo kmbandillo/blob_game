@@ -39,9 +39,11 @@ public class GameTimer extends AnimationTimer{
 	private ArrayList<Enemy> enemy;
 	private ArrayList<Powerups> powerups;
 	private float time;
+	private long lastPowerupSpawnNanoTime;
 	public static final int MAX_NUM_ENEMIES = 10;
 	public static final int MAX_NUM_FOODS = 50;
 	public static final int MAX_NUM_POWERUPS = 10;
+	private static final long POWERUP_SPAWN_INTERVAL_NANOS = TimeUnit.SECONDS.toNanos(10);
 
 	GameTimer(GraphicsContext gc, Scene theScene, Stage stage){
 		this.gc = gc;
@@ -54,6 +56,7 @@ public class GameTimer extends AnimationTimer{
 		//call the spawnEnemies method
 		this.spawnEnemies();
 		this.spawnFoods();
+		this.lastPowerupSpawnNanoTime = System.nanoTime();
 		//call method to handle mouse click event
 		this.handleKeyPressEvent();
 		this.time = 0;
@@ -67,8 +70,11 @@ public class GameTimer extends AnimationTimer{
 	    stopwatch.start();
 	    this.playerBlob.checkCollisionsWithFood(playerBlob, food);
 	    this.playerBlob.checkCollisionsWithEnemies(playerBlob, enemy);
+	    this.playerBlob.checkCollisionsWithPowerUps(playerBlob, powerups);
 
 	    this.spawnFoods();
+	    this.spawnPowerupIfNeeded(currentNanoTime);
+	    this.removeExpiredPowerups(currentNanoTime);
 
 	    ArrayList<Enemy> copy = new ArrayList<>(this.enemy);
 	    for (Enemy e : copy){
@@ -78,9 +84,6 @@ public class GameTimer extends AnimationTimer{
 	            this.enemy.remove(e);
 	        }
 	    }
-
-	    this.playerBlob.checkCollisionsWithPowerUps(playerBlob, powerups);
-
 
 	    // makes the blobs move
 	    this.moveEnemies();
@@ -92,6 +95,7 @@ public class GameTimer extends AnimationTimer{
 		//call the render enemies and render bullets methods
 		//call the render enemies and render bullets methods
 		this.renderEnemies();
+		this.renderPowerups();
 		this.renderFoods();
 		this.drawScore();
 
@@ -160,34 +164,29 @@ public class GameTimer extends AnimationTimer{
 	    }
 	}
 
-	private void spawnPowerups() {
+	private void spawnPowerupIfNeeded(long currentNanoTime) {
+	    if (currentNanoTime - this.lastPowerupSpawnNanoTime < POWERUP_SPAWN_INTERVAL_NANOS) {
+	        return;
+	    }
+	    this.spawnPowerup(currentNanoTime);
+	    this.lastPowerupSpawnNanoTime = currentNanoTime;
+	}
+
+	private void spawnPowerup(long spawnTimeNano) {
 	    Random r = new Random();
-	    int maxX = GameStage.WINDOW_WIDTH;  // Maximum allowed x position for enemy blobs
-	    int maxY = GameStage.WINDOW_HEIGHT;  // Maximum allowed y position for enemy blobs
-	    int count = 0;
-	    while (count < GameTimer.MAX_NUM_POWERUPS) {
-	        // Generate random x and y positions for the enemy blob
+	    int maxX = GameStage.WINDOW_WIDTH - Powerups.POWERUP_WIDTH;
+	    int maxY = GameStage.WINDOW_HEIGHT - Powerups.POWERUP_WIDTH;
+	    int x = r.nextInt(Math.max(1, maxX));
+	    int y = r.nextInt(Math.max(1, maxY));
+	    int type = r.nextBoolean() ? Powerups.SPEED_BOOST : Powerups.IMMUNITY;
+	    this.powerups.add(new Powerups(x, y, type, spawnTimeNano));
+	}
 
-	    	int x = r.nextInt(maxX);
-	        int y = r.nextInt(maxY);
-	        if (x < maxX && y < maxY){
-
-	        // Check if the enemy blob collides with any other enemy blobs
-		        boolean collides = false;
-		        for (Powerups p : powerups) {
-		            if (x < p.getX() + Powerups.POWERUP_WIDTH && x + Powerups.POWERUP_WIDTH > p.getX() &&
-		                y < p.getY() + Powerups.POWERUP_WIDTH && y + Powerups.POWERUP_WIDTH > p.getY()) {
-		                collides = true;
-		                break;
-		            }
-		        }
-
-
-	        // If the enemy blob does not collide with any other enemy blobs, add it to the enemy array list
-	        if (!collides) {
-	            this.powerups.add(new Powerups(x, y));
-	            count++;
-	        }
+	private void removeExpiredPowerups(long currentNanoTime) {
+	    ArrayList<Powerups> copy = new ArrayList<>(this.powerups);
+	    for (Powerups powerup : copy) {
+	        if (powerup.isExpired(currentNanoTime)) {
+	            this.powerups.remove(powerup);
 	        }
 	    }
 	}
