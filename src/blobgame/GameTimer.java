@@ -68,9 +68,10 @@ public class GameTimer extends AnimationTimer{
 		Stopwatch stopwatch = new Stopwatch();
 	    this.gc.clearRect(0, 0, GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT);
 	    stopwatch.start();
+	    this.playerBlob.updatePowerupEffects(currentNanoTime);
 	    this.playerBlob.checkCollisionsWithFood(playerBlob, food);
-	    this.playerBlob.checkCollisionsWithEnemies(playerBlob, enemy);
-	    this.playerBlob.checkCollisionsWithPowerUps(playerBlob, powerups);
+	    this.playerBlob.checkCollisionsWithEnemies(playerBlob, enemy, currentNanoTime);
+	    this.playerBlob.checkCollisionsWithPowerUps(playerBlob, powerups, currentNanoTime);
 
 	    this.spawnFoods();
 	    this.spawnPowerupIfNeeded(currentNanoTime);
