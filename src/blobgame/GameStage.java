@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -106,7 +107,47 @@ public class GameStage {
 	          }
 	      });
 
+	    b2.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	        public void handle(ActionEvent e) {
+	            showInfoWindow("Instructions",
+	                "Move with WASD. Eat food and smaller blobs to grow. " +
+	                "Avoid larger enemies, and use power-ups when they appear.");
+	        }
+	    });
+
+	    b3.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	        public void handle(ActionEvent e) {
+	            showInfoWindow("About",
+	                "Blob Game\n\n" +
+	                "Developer: kmbandillo\n" +
+	                "Email: kimmbandillo@gmail.com\n\n" +
+	                "References:\n" +
+	                "- CMSC22 base code\n" +
+	                "- Project image assets in src/images");
+	        }
+	    });
+
 	    return vbox;
+	}
+
+	private void showInfoWindow(String title, String message) {
+	    Stage infoStage = new Stage();
+	    VBox layout = new VBox(10);
+	    layout.setAlignment(Pos.CENTER);
+	    layout.setPadding(new Insets(20));
+	    Label label = new Label(message);
+	    label.setWrapText(true);
+	    label.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+	    Button closeButton = new Button("Close");
+	    closeButton.setOnAction(event -> infoStage.close());
+	    layout.getChildren().addAll(label, closeButton);
+	    Scene infoScene = new Scene(layout, 360, 240);
+	    infoStage.setTitle(title);
+	    infoStage.setScene(infoScene);
+	    infoStage.setResizable(false);
+	    infoStage.show();
 	}
 
     public void setScene(Scene scene) {
