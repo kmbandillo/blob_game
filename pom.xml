@@ -34,6 +34,7 @@
                 <configuration>
                     <includes>
                         <include>blobgame/Stopwatch.java</include>
+                        <include>blobgame/GameUtils.java</include>
                     </includes>
                 </configuration>
             </plugin>
