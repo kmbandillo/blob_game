@@ -10,7 +10,7 @@ public class Powerups extends Sprite{
     public final static Image POWERUP_IMAGE2 = new Image("images/peanut.png",POWERUP_WIDTH , POWERUP_WIDTH ,false,false);
 
     private final int type;
-    private final long spawnTimeNano;
+    private long spawnTimeNano;
 
     public Powerups(int x, int y, int type, long spawnTimeNano) {
         super(x, y);
@@ -27,10 +27,13 @@ public class Powerups extends Sprite{
         return this.type;
     }
 
+    public void adjustPauseTime(long pauseDurationNano) {
+        this.spawnTimeNano += pauseDurationNano;
+    }
+
     public boolean isExpired(long currentNanoTime) {
         return (currentNanoTime - this.spawnTimeNano) >= java.util.concurrent.TimeUnit.SECONDS.toNanos(5);
     }
 
-}
 }
 

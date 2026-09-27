@@ -17,7 +17,7 @@ public class Sprite {
 		this.visible = true;
 	}
 
-	//method to set the object's image
+	// Method to set the object's image
 	protected void loadImage(Image img){
 		try{
 			this.img = img;
@@ -25,35 +25,38 @@ public class Sprite {
 		} catch(Exception e){}
 	}
 
-	//method to set the image to the image view node
+	// Method to set the image to the image view node
 	void render(GraphicsContext gc){
 		gc.drawImage(this.img, this.x, this.y);
-
     }
 
-	//method to set the object's width and height properties
+	void render(GraphicsContext gc, double camX, double camY){
+		gc.drawImage(this.img, this.x - camX, this.y - camY);
+	}
+
+	// Method to set the object's width and height properties
 	private void setSize(){
 		this.width = this.img.getWidth();
 	    this.height = this.img.getHeight();
 	}
 
-	//method that will check for collision of two sprites
+	// Method that will check for collision of two sprites
 	public boolean collidesWith(Sprite rect2)	{
 		Rectangle2D rectangle1 = this.getBounds();
 		Rectangle2D rectangle2 = rect2.getBounds();
 
 		return rectangle1.intersects(rectangle2);
 	}
-	//method that will return the bounds of an image
-	private Rectangle2D getBounds(){
+	// Method that will return the bounds of an image
+	public Rectangle2D getBounds(){
 		return new Rectangle2D(this.x, this.y, this.width, this.height);
 	}
 
-	//method to return the image
+	// Method to return the image
 	Image getImage(){
 		return this.img;
 	}
-	//setters and getters
+	// Setters and getters
 	public int getX() {
     	return this.x;
 	}
@@ -70,7 +73,7 @@ public class Sprite {
 		return false;
 	}
 
-	//setters
+	// Setters
 	public void setDX(int dx){
 		this.dx = dx;
 	}

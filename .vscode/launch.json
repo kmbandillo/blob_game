@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Run Blob Game",
+            "request": "launch",
+            "mainClass": "blobgame.Main",
+            "projectName": "Mini Project Draft",
+            "cwd": "${workspaceFolder}",
+            "vmArgs": "--module-path \"C:/Users/kimmb/Downloads/openjfx-17.0.19_windows-x64_bin-sdk/javafx-sdk-17.0.19/lib\" --add-modules javafx.controls,javafx.graphics,javafx.base,javafx.media,javafx.web,javafx.swing,javafx.fxml"
+        }
+    ]
+}

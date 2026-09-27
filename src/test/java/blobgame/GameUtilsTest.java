@@ -17,4 +17,12 @@ public class GameUtilsTest {
     public void calcSpeed_invalid() {
         assertThrows(IllegalArgumentException.class, () -> GameUtils.calcSpeed(0));
     }
+
+    @Test
+    public void calcSpeed_largeSizeHasMinimumSpeed() {
+        assertEquals(1, GameUtils.calcSpeed(120)); // 120/120 == 1
+        assertEquals(1, GameUtils.calcSpeed(130)); // 120/130 floor is 0 -> clamped to 1
+        assertEquals(1, GameUtils.calcSpeed(200)); // larger blobs keep minimum speed of 1
+        assertEquals(1, GameUtils.calcSpeed(500));
+    }
 }
