@@ -1,4 +1,4 @@
-# 🎮 Blob.io
+# Blob.io
 
 Blob.io is a 2D arcade survival game built with JavaFX to demonstrate core Object-Oriented Programming (OOP) principles. Players strive to survive and grow by eating food and smaller blobs while avoiding larger enemies. 
 
@@ -36,7 +36,7 @@ In **Blob.io**, you start as a single blob navigating a massive map. Your object
 | ☕ **Hot Choco** | Power-Up | **Speed Boost**: Doubles movement speed for **5 seconds** |
 | 🥜 **Peanut** | Power-Up | **Immunity**: Total invulnerability against larger blobs for **5 seconds** |
 
-### ⏸️ Stateful Menu & Pause Navigation
+### Stateful Menu & Pause Navigation
 - **In-Game Menu Button**: Pause your game at any moment and return to the main menu.
 - **Continue Button**: Seamlessly resume your paused session right where you left off with blob size, split state, score, and remaining power-up durations preserved.
 - **Game Over & Instructions Screens**: Beautiful unified card layout with custom graphics and easy navigation back to the main menu.
